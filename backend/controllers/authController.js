@@ -7,6 +7,8 @@ function genererToken(utilisateur) {
       id: utilisateur.id,
       role: utilisateur.role,
       faculteId: utilisateur.faculteId,
+      nom: utilisateur.nom,
+      email: utilisateur.email,
     },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES_IN || "7d" }

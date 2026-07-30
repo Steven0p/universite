@@ -50,4 +50,15 @@ export const coursApi = {
   supprimer: (id) => request(`/cours/${id}`, { method: 'DELETE' }),
 };
 
+export const utilisateurApi = {
+  lister: () => request('/utilisateurs'),
+  creer: (payload) => request('/utilisateurs', { method: 'POST', body: json(payload) }),
+  modifier: (id, payload) => request(`/utilisateurs/${id}`, { method: 'PUT', body: json(payload) }),
+  supprimer: (id) => request(`/utilisateurs/${id}`, { method: 'DELETE' }),
+};
+
+export const activiteApi = {
+  lister: (limite) => request(`/activites${qs({ limite })}`),
+};
+
 export { API_URL };

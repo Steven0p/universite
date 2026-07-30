@@ -6,10 +6,13 @@ const sequelize = require("./config/db");
 require("./models/Faculte");
 require("./models/Cours");
 require("./models/Utilisateur");
+require("./models/ActiviteLog");
 
 const authRoutes = require("./routes/authRoutes");
 const faculteRoutes = require("./routes/faculteRoutes");
 const coursRoutes = require("./routes/coursRoutes");
+const utilisateurRoutes = require("./routes/utilisateurRoutes");
+const activiteRoutes = require("./routes/activiteRoutes");
 
 const app = express();
 
@@ -21,6 +24,8 @@ app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 app.use("/api/auth", authRoutes);
 app.use("/api/facultes", faculteRoutes);
 app.use("/api/cours", coursRoutes);
+app.use("/api/utilisateurs", utilisateurRoutes);
+app.use("/api/activites", activiteRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Route introuvable" });

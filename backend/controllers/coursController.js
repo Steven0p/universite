@@ -1,6 +1,7 @@
 const { Op } = require("sequelize");
 const Cours = require("../models/Cours");
 const Faculte = require("../models/Faculte");
+const { enregistrerActivite } = require("../utils/activite");
 
 exports.listerCours = async (req, res) => {
   const { faculteId, nom, semestre } = req.query;
@@ -40,6 +41,7 @@ exports.creerCours = async (req, res) => {
   }
 
   const cours = await Cours.create({ faculteId, code, nom, description, credits, semestre, enseignant });
+  await enregistrerActivite(req.utilisateur, "creation", "cours", cours.id, `${cours.code} — ${cours.nom}`);
   res.status(201).json(cours);
 };
 
@@ -52,6 +54,7 @@ exports.modifierCours = async (req, res) => {
 
   const { code, nom, description, credits, semestre, enseignant } = req.body;
   await cours.update({ code, nom, description, credits, semestre, enseignant });
+  await enregistrerActivite(req.utilisateur, "modification", "cours", cours.id, `${cours.code} — ${cours.nom}`);
   res.json(cours);
 };
 
@@ -62,6 +65,9 @@ exports.supprimerCours = async (req, res) => {
     return res.status(403).json({ message: "Vous ne pouvez gérer que les cours de votre propre faculté" });
   }
 
+  const libelle = `${cours.code} — ${cours.nom}`;
+  const { id } = cours;
   await cours.destroy();
+  await enregistrerActivite(req.utilisateur, "suppression", "cours", id, libelle);
   res.json({ message: "Cours supprimé" });
 };

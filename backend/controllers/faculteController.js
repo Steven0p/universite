@@ -1,5 +1,6 @@
 const Faculte = require("../models/Faculte");
 const Cours = require("../models/Cours");
+const { enregistrerActivite } = require("../utils/activite");
 
 exports.listerFacultes = async (req, res) => {
   const facultes = await Faculte.findAll({ order: [["nom", "ASC"]] });
@@ -17,6 +18,7 @@ exports.creerFaculte = async (req, res) => {
   if (!nom) return res.status(400).json({ message: "Le nom de la faculté est requis" });
 
   const faculte = await Faculte.create({ nom, description, doyen, image });
+  await enregistrerActivite(req.utilisateur, "creation", "faculte", faculte.id, faculte.nom);
   res.status(201).json(faculte);
 };
 
@@ -26,6 +28,7 @@ exports.modifierFaculte = async (req, res) => {
 
   const { nom, description, doyen, image } = req.body;
   await faculte.update({ nom, description, doyen, image });
+  await enregistrerActivite(req.utilisateur, "modification", "faculte", faculte.id, faculte.nom);
   res.json(faculte);
 };
 
@@ -33,8 +36,10 @@ exports.supprimerFaculte = async (req, res) => {
   const faculte = await Faculte.findByPk(req.params.id);
   if (!faculte) return res.status(404).json({ message: "Faculté introuvable" });
 
+  const { id, nom } = faculte;
   await Cours.destroy({ where: { faculteId: faculte.id } });
   await faculte.destroy();
+  await enregistrerActivite(req.utilisateur, "suppression", "faculte", id, nom);
   res.json({ message: "Faculté supprimée" });
 };
 
