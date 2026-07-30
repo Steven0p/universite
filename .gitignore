@@ -1,0 +1,6 @@
+# Fichiers volumineux hors du dépôt (installateurs, outils externes)
+/figma.exe
+/fontawesome-free-7.3.1-web/
+
+# Configuration locale de l'assistant
+/.claude/

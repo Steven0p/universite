@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #0f3d5c;
+  --color-navy-hover: #144d73;
+  --color-navy-soft: #eaf1f6;
+  --color-or: #c9932e;
+  --color-or-hover: #d9a23f;
+  --font-sans: 'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+a {
+  color: inherit;
+}
